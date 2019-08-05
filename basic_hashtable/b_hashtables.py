@@ -11,11 +11,12 @@ class Pair:
 
 # '''
 # Basic hash table
-# Fill this in.  All storage values should be initialized to None
+# All storage values should be initialized to None
 # '''
 class BasicHashTable:
     def __init__(self, capacity):
-        pass
+        self.capacity = capacity
+        self.storage = [None] * capacity
 
 
 # '''
@@ -23,34 +24,42 @@ class BasicHashTable:
 # Research and implement the djb2 hash function
 # '''
 def hash(string, max):
-    pass
-
-
-# '''
-# Fill this in.
+    hash = 5381
+    for char in string:
+        hash = (hash * 33) + ord(char)
+    return hash % max
 
 # If you are overwriting a value with a different key, print a warning.
 # '''
+
+# Stretch Resizing:
+# If load factor > 150%
+# then double size of hash table
+# round up to next prime
+# and rehash the values
 def hash_table_insert(hash_table, key, value):
-    pass
-
-
-# '''
-# Fill this in.
+    index = hash(key,hash_table.capacity)
+    if hash_table.storage[index]:
+        print(f"Overwriting {key}")
+    hash_table.storage[index] = value
 
 # If you try to remove a value that isn't there, print a warning.
 # '''
 def hash_table_remove(hash_table, key):
-    pass
-
-
-# '''
-# Fill this in.
+    index = hash(key,hash_table.capacity)
+    if not hash_table.storage[index]:
+        print(f"{key} doesn't exist")
+    else:
+        hash_table.storage[index] = None
 
 # Should return None if the key is not found.
 # '''
 def hash_table_retrieve(hash_table, key):
-    pass
+    index = hash(key,hash_table.capacity)
+    if not hash_table.storage[index]:
+        return None
+    else:
+        return hash_table.storage[index]
 
 
 def Testing():
