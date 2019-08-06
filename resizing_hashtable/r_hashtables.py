@@ -9,57 +9,101 @@ class LinkedPair:
         self.value = value
         self.next = None
 
-
-# '''
-# Fill this in
-
 # Resizing hash table
 # '''
 class HashTable:
     def __init__(self, capacity):
-        pass
-
+        self.capacity = capacity
+        self.storage = [None] * capacity
 
 # '''
 # Research and implement the djb2 hash function
 # '''
 def hash(string, max):
-    pass
-
+    hash = 5381
+    for char in string:
+        hash = (hash * 33) + ord(char)
+    return hash % max
 
 # '''
-# Fill this in.
-
-# Hint: Used the LL to handle collisions
+# Insert into hash table
 # '''
 def hash_table_insert(hash_table, key, value):
-    pass
+    index = hash(key,hash_table.capacity)
+    if hash_table.storage[index]:
+        current_pair = hash_table.storage[index]
+        while current_pair.next and current_pair.key != key:
+            current_pair= current_pair.next
+        if(current_pair.key == key):
+            current_pair.value = value
+        else:
+            current_pair.next = LinkedPair(key,value)
+    else:
+        hash_table.storage[index] = LinkedPair(key,value)
 
 
 # '''
-# Fill this in.
-
+# Remove From Hash Table
 # If you try to remove a value that isn't there, print a warning.
 # '''
 def hash_table_remove(hash_table, key):
-    pass
+    index = hash(key,hash_table.capacity)
+    if hash_table.storage[index]:
+        current_pair = hash_table.storage[index]
+        removed = None
+        if current_pair.key == key:
+            removed = current_pair
+            hash_table.storage[index] = current_pair.next
+        else:
+            while current_pair.next and current_pair.next.key != key:
+                current_pair = current_pair.next
+            if current_pair.next:
+                removed = current_pair.next
+                current_pair.next = current_pair.next.next
+            else:
+                print("That does not exist")
+                return None                
+        return removed.value
+    else:
+        print("That does not exist")
+        return None
 
 
 # '''
-# Fill this in.
-
+# Retrieve A Value
 # Should return None if the key is not found.
 # '''
 def hash_table_retrieve(hash_table, key):
-    pass
+    index = hash(key,hash_table.capacity)
+    if hash_table.storage[index]:
+        current_pair = hash_table.storage[index]
+        while current_pair.next and current_pair.key != key:
+            current_pair = current_pair.next
+        if current_pair.key == key:
+            return current_pair.value
+        else:
+            print("That does not exist")
+            return None
+    else:
+        print("That does not exist")
+        return None
 
 
 # '''
-# Fill this in
+# Resize Table
+# Returns resized and re-keyed HT
 # '''
 def hash_table_resize(hash_table):
-    pass
+    new_ht = HashTable(hash_table.capacity * 2)
 
+    for item in hash_table.storage:
+        if item:
+            current_item = item
+            hash_table_insert(new_ht,current_item.key,current_item.value)
+            while current_item.next:
+                current_item = current_item.next
+                hash_table_insert(new_ht,current_item.key,current_item.value)
+    return new_ht
 
 def Testing():
     ht = HashTable(2)
