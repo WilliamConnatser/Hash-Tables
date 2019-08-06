@@ -34,12 +34,12 @@ def hash(string, max):
 
 # Stretch Resizing:
 # If load factor > 150%
-# then double size of hash table
+# then double hash
 # round up to next prime
 # and rehash the values
 def hash_table_insert(hash_table, key, value):
     index = hash(key,hash_table.capacity)
-    if hash_table.storage[index]:
+    if hash_table.storage[index] and hash_table.storage[index].key != key:
         print(f"Overwriting {key}")
     hash_table.storage[index] = value
 
