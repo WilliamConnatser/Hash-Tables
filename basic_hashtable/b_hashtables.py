@@ -40,14 +40,14 @@ def hash(string, max):
 def hash_table_insert(hash_table, key, value):
     index = hash(key,hash_table.capacity)
     if hash_table.storage[index] and hash_table.storage[index].key != key:
-        print(f"Overwriting {key}")
+        print(f"Overwriting {hash_table.storage[index].key}")
     hash_table.storage[index] = value
 
 # If you try to remove a value that isn't there, print a warning.
 # '''
 def hash_table_remove(hash_table, key):
     index = hash(key,hash_table.capacity)
-    if not hash_table.storage[index]:
+    if not hash_table.storage[index] or hash_table.storage[index].key != key:
         print(f"{key} doesn't exist")
     else:
         hash_table.storage[index] = None
@@ -56,7 +56,7 @@ def hash_table_remove(hash_table, key):
 # '''
 def hash_table_retrieve(hash_table, key):
     index = hash(key,hash_table.capacity)
-    if not hash_table.storage[index]:
+    if not hash_table.storage[index] or hash_table.storage[index].key != key:
         return None
     else:
         return hash_table.storage[index]
